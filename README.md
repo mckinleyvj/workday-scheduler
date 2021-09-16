@@ -14,4 +14,4 @@
 ## Related Links:
 
 -   GitHub Repository: https://github.com/mckinleyvj/workday-scheduler
--   GitHub Live URL: -
+-   GitHub Live URL: https://mckinleyvj.github.io/workday-scheduler/
