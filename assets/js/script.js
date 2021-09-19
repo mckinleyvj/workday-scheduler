@@ -52,14 +52,14 @@ function printBoxes() {
             .attr('aria-describedby', 'saveBtn')
             .attr('id', 'text-memo')
             .attr('data-id', workhours[i])
-            .attr('disabled', true)
+            //.attr('disabled', true)
             .addClass('form-control description past');
 
             $customBtn = $('<button>')
             .addClass('btn btn-outline-dark saveBtn')
             .attr('type', 'button')
             .attr('id', 'saveBtn')
-            .attr('disabled', true)
+            //.attr('disabled', true)
             .append('<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-save\" viewBox=\"0 0 16 16\"><path d=\"M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z\"/></svg>');
 
         }else if (workhours[i] > $timeNow) {
@@ -89,18 +89,19 @@ function printBoxes() {
         
     }
 
-    // ADDITIONAL FEATURE/CLEAR ALL SCHEDULES
-    // var $div = $('<div>')
-    // .addClass('input-group mb-3')
-    // $clearBtn = $('<button>')
-    // .addClass('btn btn-outline-warning btn-lg clearBtn')
-    // .attr('type','button')
-    // .attr('id','clearBtn')
-    // .append('Clear All');
+    //ADDITIONAL FEATURE/CLEAR ALL SCHEDULES
+    var $div = $('<div>')
+    .addClass('m-3 text-center')
+    $clearBtn = $('<button>')
+    .addClass('btn btn-warning btn-md clearBtn')
+    .attr('type','button')
+    .attr('id','clearBtn')
+    // .attr('data-bs-toggle','modal')
+    // .attr('data-bs-target','#clearModal')
+    .append('Clear All');
 
-    // $div.append($clearBtn);
-    
-    // $container.append($div);
+    $div.append($clearBtn);
+    $container.append($div);
 
 }
 
@@ -197,5 +198,19 @@ $(document).ready(function() {
         saveSchedule(theMemo, theIndex);
     });
 
+    $(document).on('click', '#clearBtn', function(event){
+        event.preventDefault();
+        
+        let confirm = prompt("Please confirm by typing, \"YES\"");
+        
+        if (confirm == null) {
+            //do nothing but close alert
+        } else if (confirm.toUpperCase() === "YES") {
+            //clear storage and reload page
+            localStorage.clear();
+            location.reload();
+        }
+        
+    });
 });
 
