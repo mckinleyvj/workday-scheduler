@@ -5,8 +5,10 @@ var $customBtn;
 var $clearBtn;
 
 var storeSchedules;
-var arrSchedules = [];
 
+//main array to store schedules loaded from local storage
+var arrSchedules = [];
+//working hours
 var workhours = [9,10,11,12,13,14,15,16,17];
 
 function setDay() {
@@ -21,7 +23,7 @@ function printBoxes() {
     for (var i = 0; i < workhours.length; i++) {
 
         var $div = $('<div>')
-            .addClass('input-group mb-3')
+            .addClass('input-group mb-3 time-block')
         var $span = $('<span>')
             .addClass('input-group-text custom-span-width hour')
             .text(moment(workhours[i], 'HH').format('hA'));
@@ -33,7 +35,7 @@ function printBoxes() {
             .attr('aria-describedby', 'saveBtn')
             .attr('id', 'text-memo')
             .attr('data-id', workhours[i])
-            .addClass('form-control present');
+            .addClass('form-control description present');
 
             $customBtn = $('<button>')
             .addClass('btn btn-outline-dark saveBtn')
@@ -49,8 +51,7 @@ function printBoxes() {
             .attr('id', 'text-memo')
             .attr('data-id', workhours[i])
             .attr('disabled', true)
-            
-            .addClass('form-control past');
+            .addClass('form-control description past');
 
             $customBtn = $('<button>')
             .addClass('btn btn-outline-dark saveBtn')
@@ -66,7 +67,7 @@ function printBoxes() {
             .attr('aria-describedby', 'saveBtn')
             .attr('id', 'text-memo')
             .attr('data-id', workhours[i])
-            .addClass('form-control future');
+            .addClass('form-control description future');
 
             $customBtn = $('<button>')
             .addClass('btn btn-outline-dark saveBtn')
@@ -137,16 +138,14 @@ function printSchedules() {
 }
 
 function saveSchedule(sched,time) {
-    
-    //console.log(sched + " " + time);
+
     loadSchedules();
     
-    //lets check if there is a time exising
-    //console.log(arrSchedules);
-    //console.log(typeof arrSchedules[2]["time"]);
+    //lets check if there is a time exising from local storage
     for (i=0;i<arrSchedules.length;i++) {
         if (arrSchedules[i]["time"].includes(time)) {
-            //then we update the desc
+            //then we update the data
+            arrSchedules[i]["time"] = time;
             arrSchedules[i]["desc"] = sched;
             localStorage.setItem(
                 "schedules", JSON.stringify(arrSchedules)
@@ -155,7 +154,8 @@ function saveSchedule(sched,time) {
         }
     }
 
-    // but if going through the array does not yield return, we will add as new
+    // but if time is not found in local storage
+    // we will add as new
     var addedSchedule = {};
     addedSchedule["time"] = time;
     addedSchedule["desc"] = sched;
@@ -163,36 +163,33 @@ function saveSchedule(sched,time) {
     localStorage.setItem(
         "schedules", JSON.stringify(arrSchedules)
     );
-   
 }
 
+//Page initiate
 setDay();
 printBoxes();
 loadSchedules();
 printSchedules();
 
+//Event listeners after rendered page
 $(document).ready(function() {
 
+    //listens to actions when Save button is clicked
     $(document).on('click', '#saveBtn', function(event){
         event.preventDefault();
         if ($customBtn.attr('id') === "saveBtn") {
             var theMemo = $(this).siblings('textarea').val();
             var theIndex = $(this).siblings('textarea').attr('data-id');
-            //var convertToHour = moment(theIndex, 'HH').format('H').toString();
 
             saveSchedule(theMemo, theIndex);
         }
     });
 
+    //listens to actions when text areas are unfocused and to update changes
     $(document).on('focusout', '#text-memo', function(event){
         event.preventDefault();
         var theMemo = $(this).val();
         var theIndex = $(this).attr('data-id');
-        //var convertToHour = moment(theIndex, 'HH').format('H').toString();
-
-        // console.log(theMemo);
-        // console.log(theIndex);
-        // console.log(convertToHour);
 
         saveSchedule(theMemo, theIndex);
     });
