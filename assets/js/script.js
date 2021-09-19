@@ -2,6 +2,7 @@ var $currentDaylbl = $('#currentDay');
 var $container = $('.container');
 var $textarea;
 var $customBtn;
+var $clearBtn;
 
 var storeSchedules;
 var arrSchedules = [];
@@ -47,7 +48,7 @@ function printBoxes() {
             .attr('aria-describedby', 'saveBtn')
             .attr('id', 'text-memo')
             .attr('data-id', workhours[i])
-            //.attr('disabled', true)
+            .attr('disabled', true)
             
             .addClass('form-control past');
 
@@ -55,7 +56,7 @@ function printBoxes() {
             .addClass('btn btn-outline-dark saveBtn')
             .attr('type', 'button')
             .attr('id', 'saveBtn')
-            //.attr('disabled', true)
+            .attr('disabled', true)
             .append('<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-save\" viewBox=\"0 0 16 16\"><path d=\"M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z\"/></svg>');
 
         }else if (workhours[i] > $timeNow) {
@@ -76,26 +77,29 @@ function printBoxes() {
             .addClass('btn btn-outline-dark saveBtn')
             .attr('type', 'button')
             .attr('id', 'saveBtn')
-            //.attr('disabled', true)
             .append('<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-save\" viewBox=\"0 0 16 16\"><path d=\"M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z\"/></svg>');
-
-            // $customBtnIcon = $('<svg>')
-            // .attr('xlmns', 'http://www.w3.org/2000/svg')
-            // .attr('width','0')
-            // .attr('height','0')
-            // .attr('fill','currentColor')
-            // .attr('viewBox','0 0 0 0')
-            // .addClass('bi bi-save');
-            
-            // $customBtn.append($customBtnIcon);
-            // <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-save\" viewBox=\"0 0 16 16\"></svg>');
-            // .append('<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-save\" viewBox=\"0 0 16 16\"></svg>');
-            //<path d=\"M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z\"/>
         }            
+
+       
 
         $div.append($span, $textarea, $customBtn);
         $container.append($div);
+        
     }
+
+    // ADDITIONAL FEATURE/CLEAR ALL SCHEDULES
+    // var $div = $('<div>')
+    // .addClass('input-group mb-3')
+    // $clearBtn = $('<button>')
+    // .addClass('btn btn-outline-warning btn-lg clearBtn')
+    // .attr('type','button')
+    // .attr('id','clearBtn')
+    // .append('Clear All');
+
+    // $div.append($clearBtn);
+    
+    // $container.append($div);
+
 }
 
 function loadSchedules() {
@@ -119,17 +123,15 @@ function printSchedules() {
            var strMemo = arrSchedules[i]["desc"];
 
            $('textarea').each(function () {
-            var keyID = $(this).attr('data-id');
-            console.log(keyID);
-    
-            if (keyID === strTime) {
-                console.log(strTime);
-                console.log(strMemo);
-                $(this).text(strMemo);
-            }
+                var keyID = $(this).attr('data-id');
+                console.log(keyID);
         
-        });
-
+                if (keyID === strTime) {
+                    console.log(strTime);
+                    console.log(strMemo);
+                    $(this).text(strMemo);
+                }
+            });
         }
     }else {
         return;
@@ -138,11 +140,8 @@ function printSchedules() {
 
 function saveSchedule(sched,time) {
     
-    console.log(time);
-
     loadSchedules();
     var addedSchedule = {};
-
             
             addedSchedule["time"] = time;
             addedSchedule["desc"] = sched;
@@ -172,17 +171,21 @@ $(document).ready(function() {
             console.log(convertToHour);
 
             saveSchedule(theMemo, theIndex);
-
-            //location.reload();
-
-            // localStorage.setItem("", JSON.stringify(user));
-            // .attr('style', 'background-color: red');
-            // console.log($(event.target.parentNode.dataset.id));
-            // $(event.target).closest(div).attr('style', 'background-color: red');
-            // $(event.target).hide();
         }
-        // console.log($(event.target.parentNode.dataset.id));
-        // console.log($('#text-memo').val());
     });
+
+    $(document).on('focusout', '#text-memo', function(event){
+        event.preventDefault();
+        var theMemo = $(this).val();
+        var theIndex = $(this).attr('data-id');
+        var convertToHour = moment(theIndex, 'HH').format('H').toString();
+
+        console.log(theMemo);
+        console.log(theIndex);
+        console.log(convertToHour);
+
+        saveSchedule(theMemo, theIndex);
+    });
+
 });
 
