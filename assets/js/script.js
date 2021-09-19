@@ -190,13 +190,13 @@ $(document).ready(function() {
     });
 
     //listens to actions when text areas are unfocused and to update changes
-    $(document).on('focusout', '#text-memo', function(event){
-        event.preventDefault();
-        var theMemo = $(this).val();
-        var theIndex = $(this).attr('data-id');
+    // $(document).on('focusout', '#text-memo', function(event){
+    //     event.preventDefault();
+    //     var theMemo = $(this).val();
+    //     var theIndex = $(this).attr('data-id');
 
-        saveSchedule(theMemo, theIndex);
-    });
+    //     saveSchedule(theMemo, theIndex);
+    // });
 
     $(document).on('click', '#clearBtn', function(event){
         event.preventDefault();
