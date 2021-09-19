@@ -22,11 +22,13 @@ function printBoxes() {
 
     for (var i = 0; i < workhours.length; i++) {
 
+        var $row = $('<row>')
+        .addClass('row');
         var $div = $('<div>')
-            .addClass('input-group mb-3 time-block')
+        .addClass('input-group time-block ')
         var $span = $('<span>')
-            .addClass('input-group-text custom-span-width hour')
-            .text(moment(workhours[i], 'HH').format('hA'));
+        .addClass('input-group-text hour')
+        .text(moment(workhours[i], 'HH').format('hA'));
 
         if (workhours[i] == $timeNow) {
             //PRESENT//
@@ -82,7 +84,8 @@ function printBoxes() {
         }            
 
         $div.append($span, $textarea, $customBtn);
-        $container.append($div);
+        $row.append($div);
+        $container.append($row);
         
     }
 
