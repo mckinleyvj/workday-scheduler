@@ -80,8 +80,6 @@ function printBoxes() {
             .append('<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-save\" viewBox=\"0 0 16 16\"><path d=\"M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z\"/></svg>');
         }            
 
-       
-
         $div.append($span, $textarea, $customBtn);
         $container.append($div);
         
@@ -124,11 +122,11 @@ function printSchedules() {
 
            $('textarea').each(function () {
                 var keyID = $(this).attr('data-id');
-                console.log(keyID);
+                //console.log(keyID);
         
                 if (keyID === strTime) {
-                    console.log(strTime);
-                    console.log(strMemo);
+                    //console.log(strTime);
+                    //console.log(strMemo);
                     $(this).text(strMemo);
                 }
             });
@@ -140,16 +138,32 @@ function printSchedules() {
 
 function saveSchedule(sched,time) {
     
+    //console.log(sched + " " + time);
     loadSchedules();
-    var addedSchedule = {};
-            
-            addedSchedule["time"] = time;
-            addedSchedule["desc"] = sched;
-            arrSchedules.push(addedSchedule);
+    
+    //lets check if there is a time exising
+    //console.log(arrSchedules);
+    //console.log(typeof arrSchedules[2]["time"]);
+    for (i=0;i<arrSchedules.length;i++) {
+        if (arrSchedules[i]["time"].includes(time)) {
+            //then we update the desc
+            arrSchedules[i]["desc"] = sched;
             localStorage.setItem(
                 "schedules", JSON.stringify(arrSchedules)
             );
+            return;
+        }
+    }
 
+    // but if going through the array does not yield return, we will add as new
+    var addedSchedule = {};
+    addedSchedule["time"] = time;
+    addedSchedule["desc"] = sched;
+    arrSchedules.push(addedSchedule);
+    localStorage.setItem(
+        "schedules", JSON.stringify(arrSchedules)
+    );
+   
 }
 
 setDay();
@@ -164,11 +178,7 @@ $(document).ready(function() {
         if ($customBtn.attr('id') === "saveBtn") {
             var theMemo = $(this).siblings('textarea').val();
             var theIndex = $(this).siblings('textarea').attr('data-id');
-            var convertToHour = moment(theIndex, 'HH').format('H').toString();
-
-            console.log(theMemo);
-            console.log(theIndex);
-            console.log(convertToHour);
+            //var convertToHour = moment(theIndex, 'HH').format('H').toString();
 
             saveSchedule(theMemo, theIndex);
         }
@@ -178,11 +188,11 @@ $(document).ready(function() {
         event.preventDefault();
         var theMemo = $(this).val();
         var theIndex = $(this).attr('data-id');
-        var convertToHour = moment(theIndex, 'HH').format('H').toString();
+        //var convertToHour = moment(theIndex, 'HH').format('H').toString();
 
-        console.log(theMemo);
-        console.log(theIndex);
-        console.log(convertToHour);
+        // console.log(theMemo);
+        // console.log(theIndex);
+        // console.log(convertToHour);
 
         saveSchedule(theMemo, theIndex);
     });
