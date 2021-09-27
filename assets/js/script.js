@@ -207,7 +207,8 @@ $(document).ready(function() {
             //do nothing but close alert
         } else if (confirm.toUpperCase() === "YES") {
             //clear storage and reload page
-            localStorage.clear();
+            //localStorage.clear();
+            window.localStorage.removeItem('schedules');
             location.reload();
         }
         
